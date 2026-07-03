@@ -1,334 +1,367 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Discord Bot</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <style>
-body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+  .dc-wrap { width: 100%; overflow: hidden; }
 
-body, html {
-  height: 100%;
-  line-height: 1.8;
-}
+  /* NAV */
+  .dc-nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 2rem; border-bottom: 0.5px solid var(--border); background: var(--surface-2); }
+  .dc-logo { display: flex; align-items: center; gap: 10px; font-weight: 500; font-size: 18px; color: var(--text-primary); }
+  .dc-logo-icon { width: 40px; height: 40px; background: #f6f7f8; border-radius: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid black; }
+  .dc-nav-cta { background: #5865F2; color: #fff; border: none; padding: 8px 20px; border-radius: var(--radius); font-size: 14px; font-weight: 500; cursor: pointer; }
+  .dc-nav-cta:hover { background: #4752C4; }
 
-/* Full height image header */
-.bgimg-1 {
-  background-position: center;
-  background-size: cover;
-  background-image: url("/w3images/mac.jpg");
-  min-height: 100%;
-}
+  /* HERO */
+  .dc-hero { text-align: center; padding: 4rem 2rem 3rem; background: var(--surface-1); }
+  .dc-badge { display: inline-flex; align-items: center; gap: 6px; background: #EEF0FF; color: #4752C4; font-size: 12px; font-weight: 500; padding: 4px 14px; border-radius: 999px; margin-bottom: 1.5rem; }
+  .dc-hero h1 { font-size: 42px; font-weight: 500; color: var(--text-primary); line-height: 1.2; max-width: 640px; margin: 0 auto 1rem; }
+  .dc-hero h1 span { color: #5865F2; }
+  .dc-hero p { font-size: 17px; color: var(--text-secondary); max-width: 520px; margin: 0 auto 2rem; line-height: 1.7; }
+  .dc-hero-btns { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; }
+  .dc-btn-primary { background: #5865F2; color: #fff; border: none; padding: 12px 28px; border-radius: var(--radius); font-size: 15px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+  .dc-btn-primary:hover { background: #4752C4; }
+  .dc-btn-secondary { background: var(--surface-2); color: var(--text-primary); border: 0.5px solid var(--border-strong); padding: 12px 28px; border-radius: var(--radius); font-size: 15px; font-weight: 500; cursor: pointer; }
+  .dc-btn-secondary:hover { background: var(--surface-1); }
 
-.w3-bar .w3-button {
-  padding: 16px;
-}
+  /* STATS */
+  .dc-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--border); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .dc-stat { background: var(--surface-2); padding: 1.5rem; text-align: center; }
+  .dc-stat-num { font-size: 28px; font-weight: 500; color: #5865F2; }
+  .dc-stat-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+  /* FEATURES */
+  .dc-section { padding: 3.5rem 2rem; }
+  .dc-section-title { text-align: center; margin-bottom: 2.5rem; }
+  .dc-section-title h2 { font-size: 28px; font-weight: 500; color: var(--text-primary); margin-bottom: 0.5rem; }
+  .dc-section-title p { font-size: 15px; color: var(--text-secondary); }
+  .dc-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+  .dc-feature-card { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px; padding: 1.25rem; }
+  .dc-feature-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; font-size: 20px; }
+  .dc-feature-card h3 { font-size: 15px; font-weight: 500; color: var(--text-primary); margin-bottom: 6px; }
+  .dc-feature-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* HOW IT WORKS */
+  .dc-steps { background: var(--surface-1); }
+  .dc-steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0; }
+  .dc-step { padding: 2rem 1.5rem; text-align: center; position: relative; }
+  .dc-step-num { width: 36px; height: 36px; background: #5865F2; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; margin: 0 auto 1rem; }
+  .dc-step h3 { font-size: 14px; font-weight: 500; color: var(--text-primary); margin-bottom: 6px; }
+  .dc-step p { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+  /* PRICING */
+  .dc-pricing { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; max-width: 860px; margin: 0 auto; }
+  .dc-plan { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px; padding: 1.5rem; display: flex; flex-direction: column; }
+  .dc-plan.featured { border: 2px solid #5865F2; position: relative; }
+  .dc-popular { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: #5865F2; color: #fff; font-size: 11px; font-weight: 500; padding: 3px 14px; border-radius: 999px; white-space: nowrap; }
+  .dc-plan-name { font-size: 13px; font-weight: 500; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+  .dc-plan-price { font-size: 36px; font-weight: 500; color: var(--text-primary); line-height: 1; }
+  .dc-plan-price span { font-size: 14px; color: var(--text-muted); font-weight: 400; }
+  .dc-plan-desc { font-size: 13px; color: var(--text-secondary); margin: 0.75rem 0 1.25rem; line-height: 1.5; }
+  .dc-plan-features { list-style: none; flex: 1; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 8px; }
+  .dc-plan-features li { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; color: var(--text-secondary); }
+  .dc-plan-features li i { color: #5865F2; margin-top: 1px; font-size: 15px; flex-shrink: 0; }
+  .dc-plan-features li i.no { color: var(--text-muted); }
+  .dc-plan-btn { display: block; text-align: center; padding: 10px; border-radius: var(--radius); font-size: 14px; font-weight: 500; cursor: pointer; border: 0.5px solid #5865F2; color: #5865F2; background: transparent; }
+  .dc-plan-btn.filled { background: #5865F2; color: #fff; border-color: #5865F2; }
+  .dc-plan-btn:hover { opacity: 0.85; }
+
+  /* TESTIMONIALS */
+  .dc-testimonials { background: var(--surface-1); }
+  .dc-testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .dc-testimonial { background: var(--surface-2); border: 0.5px solid var(--border); border-radius: 12px; padding: 1.25rem; }
+  .dc-stars { color: #F5C400; font-size: 13px; margin-bottom: 10px; letter-spacing: 2px; }
+  .dc-testimonial p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem; }
+  .dc-testimonial-author { display: flex; align-items: center; gap: 10px; }
+  .dc-avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 500; color: #fff; flex-shrink: 0; }
+  .dc-author-name { font-size: 13px; font-weight: 500; color: var(--text-primary); }
+  .dc-author-role { font-size: 11px; color: var(--text-muted); }
+
+  /* FAQ */
+  .dc-faq { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 2px; }
+  .dc-faq-item { border: 0.5px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .dc-faq-q { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; cursor: pointer; font-size: 14px; font-weight: 500; color: var(--text-primary); background: var(--surface-2); }
+  .dc-faq-q:hover { background: var(--surface-1); }
+  .dc-faq-a { font-size: 13px; color: var(--text-secondary); line-height: 1.6; padding: 0 1.25rem 1rem; background: var(--surface-2); display: none; }
+  .dc-faq-item.open .dc-faq-a { display: block; }
+  .dc-faq-item.open .dc-faq-icon { transform: rotate(180deg); }
+  .dc-faq-icon { transition: transform 0.2s; font-size: 16px; color: var(--text-muted); }
+
+  /* CTA BANNER */
+  .dc-cta-banner { background: #5865F2; padding: 3rem 2rem; text-align: center; }
+  .dc-cta-banner h2 { font-size: 26px; font-weight: 500; color: #fff; margin-bottom: 0.75rem; }
+  .dc-cta-banner p { font-size: 15px; color: rgba(255,255,255,0.8); margin-bottom: 1.75rem; }
+  .dc-btn-white { background: #fff; color: #5865F2; border: none; padding: 12px 28px; border-radius: var(--radius); font-size: 15px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+  .dc-btn-white:hover { background: #EEF0FF; }
+
+  /* FOOTER */
+  .dc-footer { background: var(--surface-2); border-top: 0.5px solid var(--border); padding: 1.5rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: gap; }
+  .dc-footer-copy { font-size: 13px; color: var(--text-muted); }
+  .dc-footer-links { display: flex; gap: 16px; }
+  .dc-footer-links a { font-size: 13px; color: var(--text-secondary); text-decoration: none; }
+  .dc-footer-links a:hover { color: #5865F2; }
 </style>
-</head>
-<body>
 
-<!-- Navbar (sit on top) -->
-<div class="w3-top">
-  <div class="w3-bar w3-white w3-card" id="myNavbar">
-    <a href="#home" class="w3-bar-item w3-button w3-wide">GUILD BOT</a>
-    <!-- Right-sided navbar links -->
-    <div class="w3-right w3-hide-small">
-      <a href="#about" class="w3-bar-item w3-button">ABOUT</a>
-      <a href="#work" class="w3-bar-item w3-button"><i class="fa fa-th"></i> WORK</a>
-      <a href="#pricing" class="w3-bar-item w3-button"><i class="fa fa-usd"></i> PRICING</a>
-      <a href="#contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> CONTACT</a>
-    </div>
-    <!-- Hide right-floated links on small screens and replace them with a menu icon -->
+<div class="dc-wrap">
+  <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Discord Connect — Link your Shopify store with Discord</h2>
 
-    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
-      <i class="fa fa-bars"></i>
-    </a>
-  </div>
-</div>
-
-<!-- Sidebar on small screens when clicking the menu icon -->
-<nav class="w3-sidebar w3-bar-block w3-black w3-card w3-animate-left w3-hide-medium w3-hide-large" style="display:none" id="mySidebar">
-  <a href="javascript:void(0)" onclick="w3_close()" class="w3-bar-item w3-button w3-large w3-padding-16">Close ×</a>
-  <a href="#about" onclick="w3_close()" class="w3-bar-item w3-button">ABOUT</a>
-  <a href="#work" onclick="w3_close()" class="w3-bar-item w3-button">WORK</a>
-  <a href="#pricing" onclick="w3_close()" class="w3-bar-item w3-button">PRICING</a>
-  <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button">CONTACT</a>
-</nav>
-
-<!-- Header with full-height image -->
-<header class="bgimg-1 w3-display-container w3-grayscale-min" id="home">
-  <div class="w3-display-left w3-text-white" style="padding:48px">
-    <span class="w3-jumbo w3-hide-small">Start something that matters</span><br>
-    <span class="w3-xxlarge w3-hide-large w3-hide-medium">Start something that matters</span><br>
-    <span class="w3-large">Stop wasting valuable time with projects that just isn't you.</span>
-    <p><a href="#about" class="w3-button w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Discord-Shopify Integration App</a></p>
-  </div> 
-  <div class="w3-display-bottomleft w3-text-grey w3-large" style="padding:24px 48px">
-    <i class="fa fa-facebook-official w3-hover-opacity"></i>
-    <i class="fa fa-instagram w3-hover-opacity"></i>
-    <i class="fa fa-snapchat w3-hover-opacity"></i>
-    <i class="fa fa-pinterest-p w3-hover-opacity"></i>
-    <i class="fa fa-twitter w3-hover-opacity"></i>
-    <i class="fa fa-linkedin w3-hover-opacity"></i>
-  </div>
-</header>
-
-<!-- About Section -->
-<div class="w3-container" style="padding:128px 16px" id="about">
-  <h3 class="w3-center">ABOUT DISCORD CONNECT</h3>
-  <p class="w3-center w3-large">Key features</p>
-  <div class="w3-row-padding w3-center" style="margin-top:64px">
-    <div class="w3-quarter">
-      <i class="fa fa-desktop w3-margin-bottom w3-jumbo w3-center"></i>
-      <p class="w3-large">Auto-Assign Roles Based on Purchase History</p>
-      <p>Reward your customers by automatically assigning Discord roles based on their total purchases or specific products they've bought. The more they shop, the more exclusive their role and access on your server.</p>
-    </div>
-    <div class="w3-quarter">
-      <i class="fa fa-heart w3-margin-bottom w3-jumbo"></i>
-      <p class="w3-large">Real-Time Order Updates in Discord</p>
-      <p>Receive instant notifications in designated Discord channels whenever new orders are placed in your Shopify store. Keep your team and community informed about sales and customer activity in real time.</p>
-    </div>
-    <div class="w3-quarter">
-      <i class="fa fa-diamond w3-margin-bottom w3-jumbo"></i>
-      <p class="w3-large">Customer Sync with Discord Profiles</p>
-      <p>Link your customers' Shopify accounts with their Discord profiles for seamless communication. Automatically assign them specific tags or roles based on their order status or VIP status in the store.</p>
-    </div>
-    <div class="w3-quarter">
-      <i class="fa fa-cog w3-margin-bottom w3-jumbo"></i>
-      <p class="w3-large">Custom Role Management</p>
-      <p>Set up custom roles and permissions for different types of customers. From first-time buyers to your top-tier customers, provide each group with unique roles and access levels.</p>
-    </div>
-  </div>
-</div>
-
-<!-- Promo Section - "We know design" -->
-<div class="w3-container w3-light-grey" style="padding:128px 16px">
-  <div class="w3-row-padding">
-    <div class="w3-col m6">
-      <h3>Connect Your Shopify Store</h3>
-      <p>Simply link your Shopify store with our Discord integration app by installing the app and providing your store credentials.</p>
-      <p><a href="#work" class="w3-button w3-black"><i class="fa fa-th"> </i> View Our Works</a></p>
-    </div>
-    <div class="w3-col m6">
-      <img class="w3-image w3-round-large" src="images/discord_logo.png" alt="Buildings" width="700" height="394">
-    </div>
-  </div>
-</div>
-
-<!-- Promo Section "Statistics" -->
-<!-- <div class="w3-container w3-row w3-center w3-dark-grey w3-padding-64">
-  <div class="w3-quarter">
-    <span class="w3-xxlarge">14+</span>
-    <br>Partners
-  </div>
-  <div class="w3-quarter">
-    <span class="w3-xxlarge">55+</span>
-    <br>Projects Done
-  </div>
-  <div class="w3-quarter">
-    <span class="w3-xxlarge">89+</span>
-    <br>Happy Clients
-  </div>
-  <div class="w3-quarter">
-    <span class="w3-xxlarge">150+</span>
-    <br>Meetings
-  </div>
-</div> -->
-
-<!-- Work Section -->
-<div class="w3-container" style="padding:128px 16px" id="work">
-  <h3 class="w3-center">Benefits</h3>
-  <p class="w3-center w3-large">Increase Community Engagement:</p>
-
-  <div class="w3-row-padding" style="margin-top:64px">
-    <div class="w3-col l3 m6">
-      <img src="images/discord-add-bot.png" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="A microphone">
-    </div>
-    <div class="w3-col l3 m6">
-      <img src="images/discord-add-member.png" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="A phone">
-    </div>
-    <div class="w3-col l3 m6">
-      <img src="images/discord-add-new-server.png" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="A drone">
-    </div>
-    <div class="w3-col l3 m6">
-      <img src="images/discord-added-bot.png" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="Soundbox">
-    </div>
-  </div>
-
-  <div class="w3-row-padding w3-section">
-    <div class="w3-col l3 m6">
-      <img src="images/discord-added-member.png" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="A tablet">
-    </div>
-    <div class="w3-col l3 m6">
-      <img src="images/discord-create-server.png" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="A camera">
-    </div>
-    <div class="w3-col l3 m6">
-      <img src="images/discord-enter-name-server.png" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="A typewriter">
-    </div>
-    <div class="w3-col l3 m6">
-      <img src="images/discord-generate-bot.png" style="width:100%" onclick="onClick(this)" class="w3-hover-opacity" alt="A tableturner">
-    </div>
-  </div>
-</div>
-
-<!-- Modal for full size images on click-->
-<div id="modal01" class="w3-modal w3-black" onclick="this.style.display='none'">
-  <span class="w3-button w3-xxlarge w3-black w3-padding-large w3-display-topright" title="Close Modal Image">×</span>
-  <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
-    <img id="img01" class="w3-image">
-    <p id="caption" class="w3-opacity w3-large"></p>
-  </div>
-</div>
-
-<!-- Skills Section -->
-<div class="w3-container w3-light-grey w3-padding-64">
-  <div class="w3-row-padding">
-    <div class="w3-col m6">
-      <h3>Benefits of the Integration</h3>
-      <p><b>Boost Customer Loyalty:</b> Reward repeat customers with exclusive Discord roles and perks, encouraging further purchases.</p>
-      <p><b>Role Management:</b> Save time by letting the app handle customer roles and rewards based on Shopify data.</p>
-    </div>
-    <div class="w3-col m6">
-      <p class="w3-wide"><i class="fa fa-camera w3-margin-right"></i>Build Custom App</p>
-      <div class="w3-grey">
-        <div class="w3-container w3-dark-grey w3-center" style="width:90%">90%</div>
+  <!-- NAV -->
+  <nav class="dc-nav">
+    <div class="dc-logo">
+      <div class="dc-logo-icon">
+        <img width="20" height="20" src="./images/discord_logo.png" alt="Discord Connect logo" >
       </div>
-      <p class="w3-wide"><i class="fa fa-desktop w3-margin-right"></i>Easy to Setup</p>
-      <div class="w3-grey">
-        <div class="w3-container w3-dark-grey w3-center" style="width:85%">85%</div>
+      Discord Connect
+    </div>
+    <button class="dc-nav-cta" onclick="window.open('https://apps.shopify.com/discord-connect','_blank')">
+      <i class="ti ti-external-link" aria-hidden="true"></i> Add to Shopify
+    </button>
+  </nav>
+
+  <!-- HERO -->
+  <section class="dc-hero">
+    <div class="dc-badge">
+      <i class="ti ti-sparkles" aria-hidden="true"></i>
+      Shopify App Store
+    </div>
+    <h1>Connect your store to <span>Discord</span> — effortlessly</h1>
+    <p>Let customers link their Discord accounts, unlock roles based on purchases, and build a thriving community around your brand.</p>
+    <div class="dc-hero-btns">
+      <button class="dc-btn-primary" onclick="window.open('https://apps.shopify.com/discord-connect','_blank')">
+        <i class="ti ti-brand-shopify" aria-hidden="true"></i> Install free on Shopify
+      </button>
+      <button class="dc-btn-secondary" onclick="document.getElementById('how-it-works').scrollIntoView({behavior:'smooth'})">See how it works</button>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="dc-stats">
+    <div class="dc-stat"><div class="dc-stat-num">5,000+</div><div class="dc-stat-label">Stores connected</div></div>
+    <div class="dc-stat"><div class="dc-stat-num">100+</div><div class="dc-stat-label">Members linked</div></div>
+    <div class="dc-stat"><div class="dc-stat-num">5.0★</div><div class="dc-stat-label">App Store rating</div></div>
+    <div class="dc-stat"><div class="dc-stat-num">99.9%</div><div class="dc-stat-label">Uptime</div></div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="dc-section">
+    <div class="dc-section-title">
+      <h2>Everything you need to run your Discord community</h2>
+      <p>Powerful tools, zero coding required</p>
+    </div>
+    <div class="dc-features">
+      <div class="dc-feature-card">
+        <div class="dc-feature-icon" style="background:#EEF0FF"><i class="ti ti-link" style="color:#5865F2;font-size:20px" aria-hidden="true"></i></div>
+        <h3>One-click Discord link</h3>
+        <p>Customers connect their Discord account from your store's account page in seconds.</p>
       </div>
-      <p class="w3-wide"><i class="fa fa-photo w3-margin-right"></i>Quick Integration</p>
-      <div class="w3-grey">
-        <div class="w3-container w3-dark-grey w3-center" style="width:75%">75%</div>
+      <div class="dc-feature-card">
+        <div class="dc-feature-icon" style="background:#E6F9F0"><i class="ti ti-shield-check" style="color:#12B886;font-size:20px" aria-hidden="true"></i></div>
+        <h3>Purchase-gated roles</h3>
+        <p>Automatically assign Discord roles when customers complete a purchase.</p>
+      </div>
+      <div class="dc-feature-card">
+        <div class="dc-feature-icon" style="background:#FFF3E0"><i class="ti ti-tag" style="color:#E67700;font-size:20px" aria-hidden="true"></i></div>
+        <h3>Tag-based roles</h3>
+        <p>Sync Shopify customer tags directly as Discord roles for fine-grained access.</p>
+      </div>
+      <div class="dc-feature-card">
+        <div class="dc-feature-icon" style="background:#FCE8E8"><i class="ti ti-users" style="color:#E03131;font-size:20px" aria-hidden="true"></i></div>
+        <h3>Auto server join</h3>
+        <p>Add customers directly to your Discord server when they link their account.</p>
+      </div>
+      <div class="dc-feature-card">
+        <div class="dc-feature-icon" style="background:#EEF0FF"><i class="ti ti-palette" style="color:#5865F2;font-size:20px" aria-hidden="true"></i></div>
+        <h3>Custom branding</h3>
+        <p>Fully customize button text, colors, titles, and descriptions to match your store.</p>
+      </div>
+      <div class="dc-feature-card">
+        <div class="dc-feature-icon" style="background:#E6F9F0"><i class="ti ti-chart-bar" style="color:#12B886;font-size:20px" aria-hidden="true"></i></div>
+        <h3>Analytics & logs</h3>
+        <p>Track linked members, role assignments, and engagement from your dashboard.</p>
       </div>
     </div>
-  </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="dc-section dc-steps" id="how-it-works">
+    <div class="dc-section-title">
+      <h2>Up and running in minutes</h2>
+      <p>No developer needed</p>
+    </div>
+    <div class="dc-steps-grid">
+      <div class="dc-step">
+        <div class="dc-step-num">1</div>
+        <h3>Install the app</h3>
+        <p>Add Discord Connect from the Shopify App Store with one click.</p>
+      </div>
+      <div class="dc-step">
+        <div class="dc-step-num">2</div>
+        <h3>Connect your bot</h3>
+        <p>Paste your Discord bot token and guild ID — takes under 2 minutes.</p>
+      </div>
+      <div class="dc-step">
+        <div class="dc-step-num">3</div>
+        <h3>Set up roles</h3>
+        <p>Choose which roles to assign based on purchases or customer tags.</p>
+      </div>
+      <div class="dc-step">
+        <div class="dc-step-num">4</div>
+        <h3>Go live</h3>
+        <p>Your customers can now link Discord from their account profile page.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="dc-section" id="pricing">
+    <div class="dc-section-title">
+      <h2>Simple, transparent pricing</h2>
+      <p>Start free, upgrade as you grow</p>
+    </div>
+    <div class="dc-pricing">
+
+      <!-- FREE -->
+      <div class="dc-plan">
+        <div class="dc-plan-name">Free</div>
+        <div class="dc-plan-price">$0 <span>/ month</span></div>
+        <div class="dc-plan-desc">Perfect for getting started and testing the integration.</div>
+        <ul class="dc-plan-features">
+          <li><i class="ti ti-check" aria-hidden="true"></i> Up to 100 linked members</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Login with Discord</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Basic role assignment</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Discord embed button</li>
+          <li><i class="ti ti-x no" aria-hidden="true"></i> Customer notifications</li>
+          <li><i class="ti ti-x no" aria-hidden="true"></i> Custom Design</li>
+          <li><i class="ti ti-x no" aria-hidden="true"></i> Chat support</li>
+        </ul>
+        <button class="dc-plan-btn" onclick="window.open('https://apps.shopify.com/discord-connect','_blank')">Get started free</button>
+      </div>
+
+      <!-- PRO -->
+      <div class="dc-plan featured">
+        <div class="dc-popular">Most popular</div>
+        <div class="dc-plan-name">Basic</div>
+        <div class="dc-plan-price">$19 <span>/ month</span></div>
+        <div class="dc-plan-desc">For growing stores that want full control over their community.</div>
+        <ul class="dc-plan-features">
+          <li><i class="ti ti-check" aria-hidden="true"></i> Unlimited linked members</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Auto add member on Discord</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Order notifications</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Tag-based role sync</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Linked account on Discord</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Report dashboard</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Priority support</li>
+        </ul>
+        <button class="dc-plan-btn filled" onclick="window.open('https://apps.shopify.com/discord-connect','_blank')">Get Basic</button>
+      </div>
+
+      <!-- PREMIUM -->
+      <div class="dc-plan">
+        <div class="dc-plan-name">Premium</div>
+        <div class="dc-plan-price">$79 <span>/ month</span></div>
+        <div class="dc-plan-desc">For high-volume stores and agencies managing multiple brands.</div>
+        <ul class="dc-plan-features">
+          <li><i class="ti ti-check" aria-hidden="true"></i> Unlimited linked members</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Unlimited servers</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Everything in Basic</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Role Based on Subscription</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Role Based on Order Placed</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Invite & Account Link button</li>
+          <li><i class="ti ti-check" aria-hidden="true"></i> Priority support + Chat</li>
+        </ul>
+        <button class="dc-plan-btn" onclick="window.open('https://apps.shopify.com/discord-connect','_blank')">Get Premium</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="dc-section dc-testimonials">
+    <div class="dc-section-title">
+      <h2>Loved by store owners</h2>
+      <p>Join thousands of merchants building communities</p>
+    </div>
+    <div class="dc-testimonials-grid">
+      <div class="dc-testimonial">
+        <div class="dc-stars">★★★★★</div>
+        <p>"Great functionality, and even better customer service. Team was responsive and willing to help with some customizations for our store to make it work better for us. Happy to support this project!"</p>
+        <div class="dc-testimonial-author">
+          <div class="dc-avatar" style="background:#5865F2">HB</div>
+          <div><div class="dc-author-name">The Hobby Bin</div><div class="dc-author-role">United States</div></div>
+        </div>
+      </div>
+      <div class="dc-testimonial">
+        <div class="dc-stars">★★★★★</div>
+        <p>"The developers are always easy to reach, and they have implemented numerous features for us (very quickly i might add) that were essential for our needs. 100% recommended, best discord integration out there by far."</p>
+        <div class="dc-testimonial-author">
+          <div class="dc-avatar" style="background:#12B886">TL</div>
+          <div><div class="dc-author-name">ThinLineSanctuary</div><div class="dc-author-role">Hungary</div></div>
+        </div>
+      </div>
+      <div class="dc-testimonial">
+        <div class="dc-stars">★★★★★</div>
+        <p>"Customer service is very quick with responding back and nice! Provides everything you need + a detailed video to help with installation (its a blessing). I def recommend using this! You can have up to 100 log-in's that are free before having to pay (that's fine, its so good if you want to test it with your community!). Very useful!"</p>
+        <div class="dc-testimonial-author">
+          <div class="dc-avatar" style="background:#E67700">DD</div>
+          <div><div class="dc-author-name">DippinDotty</div><div class="dc-author-role">United States</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="dc-section">
+    <div class="dc-section-title">
+      <h2>Frequently asked questions</h2>
+    </div>
+    <div class="dc-faq" id="faq">
+      <div class="dc-faq-item">
+        <div class="dc-faq-q" onclick="toggleFaq(this)">Do I need a Discord bot to use this app? <i class="ti ti-chevron-down dc-faq-icon" aria-hidden="true"></i></div>
+        <div class="dc-faq-a">Yes, you'll need a Discord bot with the appropriate permissions. Our setup guide walks you through creating one in about 2 minutes — no coding needed.</div>
+      </div>
+      <div class="dc-faq-item">
+        <div class="dc-faq-q" onclick="toggleFaq(this)">Can I restrict linking to paying customers only? <i class="ti ti-chevron-down dc-faq-icon" aria-hidden="true"></i></div>
+        <div class="dc-faq-a">Yes. Enable the "paid users only" option in settings and only customers with at least one completed paid order will be able to link their Discord account.</div>
+      </div>
+      <div class="dc-faq-item">
+        <div class="dc-faq-q" onclick="toggleFaq(this)">What happens if a customer unlinks their Discord? <i class="ti ti-chevron-down dc-faq-icon" aria-hidden="true"></i></div>
+        <div class="dc-faq-a">Roles assigned by the app are automatically removed when a customer unlinks. You can also configure the app to keep roles even after unlinking.</div>
+      </div>
+      <div class="dc-faq-item">
+        <div class="dc-faq-q" onclick="toggleFaq(this)">Is there a free trial on paid plans? <i class="ti ti-chevron-down dc-faq-icon" aria-hidden="true"></i></div>
+        <div class="dc-faq-a">Yes — the Pro plan includes a 7-day free trial with no credit card required. You can cancel at any time before the trial ends.</div>
+      </div>
+      <div class="dc-faq-item">
+        <div class="dc-faq-q" onclick="toggleFaq(this)">Does it work with Shopify's customer accounts? <i class="ti ti-chevron-down dc-faq-icon" aria-hidden="true"></i></div>
+        <div class="dc-faq-a">Yes. The Discord link button appears on the customer account profile page using Shopify's Customer Account UI Extensions.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="dc-cta-banner">
+    <h2>Ready to grow your Discord community?</h2>
+    <p>Join 5,000+ Shopify merchants already using Discord Connect</p>
+    <button class="dc-btn-white" onclick="window.open('https://apps.shopify.com/discord-connect','_blank')">
+      <i class="ti ti-brand-shopify" aria-hidden="true"></i> Add to Shopify — it's free
+    </button>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="dc-footer">
+    <div class="dc-footer-copy">© 2026 Discord Connect · Built by GuildBots</div>
+    <div class="dc-footer-links">
+      <a href="https://site.guildbots.com" target="_blank">GuildBots</a>
+      <a href="https://apps.shopify.com/discord-connect" target="_blank">App Store</a>
+      <a href="https://site.guildbots.com/guildsbots_policy.html" target="_blank">Privacy</a>
+    </div>
+  </footer>
 </div>
 
-<!-- Pricing Section -->
-<div class="w3-container w3-center w3-dark-grey" style="padding:128px 16px" id="pricing">
-  <h3>PRICING</h3>
-  <p class="w3-large">Choose a pricing plan that fits your needs.</p>
-  <div class="w3-row-padding" style="margin-top:64px">
-    <div class="w3-third w3-section">
-      <ul class="w3-ul w3-white w3-hover-shadow">
-        <li class="w3-black w3-xlarge w3-padding-32">Free</li>
-        <li class="w3-padding-16"><b>100</b> Users Monthly Login</li>
-        <li class="w3-padding-16">Build Discord Developer App</li>
-        <li class="w3-padding-16">Redirect on Custom URL</li>
-        <li class="w3-padding-16">Multipass Token Login</li>
-        <li class="w3-padding-16">
-          <h2 class="w3-wide">$0</h2>
-          <span class="w3-opacity">for-ever</span>
-        </li>
-        <li class="w3-light-grey w3-padding-24">
-          <button class="w3-button w3-black w3-padding-large">Contact Us</button>
-        </li>
-      </ul>
-    </div>
-    <div class="w3-third">
-      <ul class="w3-ul w3-white w3-hover-shadow">
-        <li class="w3-red w3-xlarge w3-padding-48">Basic</li>
-        <li class="w3-padding-16">Unlimited Users Login/Registration</li>
-        <li class="w3-padding-16">Auto Add Member on Discord</li>
-        <li class="w3-padding-16">Add Role to Member on Register</li>
-        <li class="w3-padding-16">Linked existing account on discord server</li>
-        <li class="w3-padding-16">
-          <h2 class="w3-wide">$19</h2>
-          <span class="w3-opacity">per month</span>
-        </li>
-        <li class="w3-light-grey w3-padding-24">
-          <button class="w3-button w3-black w3-padding-large">Contact Us</button>
-        </li>
-      </ul>
-    </div>
-    <div class="w3-third w3-section">
-      <ul class="w3-ul w3-white w3-hover-shadow">
-        <li class="w3-black w3-xlarge w3-padding-32">Premium</li>
-        <li class="w3-padding-16">Unlimited Users Login/Registration</li>
-        <li class="w3-padding-16">Assign Role Based on Users Tags Subscription</li>
-        <li class="w3-padding-16">Role Based on product purchase</li>
-        <li class="w3-padding-16">Invite & Account Link button</li>
-        <li class="w3-padding-16">
-          <h2 class="w3-wide">$79</h2>
-          <span class="w3-opacity">per month</span>
-        </li>
-        <li class="w3-light-grey w3-padding-24">
-          <button class="w3-button w3-black w3-padding-large">Contact Us</button>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-<!-- Contact Section -->
-<div class="w3-container w3-light-grey" style="padding:128px 16px" id="contact">
-  <h3 class="w3-center">CONTACT</h3>
-  <p class="w3-center w3-large">Lets get in touch. Send us a message:</p>
-  <div style="margin-top:48px">
-    <p><i class="fa fa-map-marker fa-fw w3-xxlarge w3-margin-right"></i> 5396 North Reese Avenue, Fresno CA 93722, NY, AMA, 93722, CO</p>
-    <!-- <p><i class="fa fa-phone fa-fw w3-xxlarge w3-margin-right"></i> Phone: +00 151515</p> -->
-    <p><i class="fa fa-envelope fa-fw w3-xxlarge w3-margin-right"> </i> Email: <b>info@guildbotsdev.com</b></p>
-    <br>
-    <form action="/action_page.php" target="_blank">
-      <p><input class="w3-input w3-border" type="text" placeholder="Name" required name="Name"></p>
-      <p><input class="w3-input w3-border" type="text" placeholder="Email" required name="Email"></p>
-      <p><input class="w3-input w3-border" type="text" placeholder="Subject" required name="Subject"></p>
-      <p><input class="w3-input w3-border" type="text" placeholder="Message" required name="Message"></p>
-      <p>
-        <button class="w3-button w3-black" type="submit">
-          <i class="fa fa-paper-plane"></i> SEND MESSAGE
-        </button>
-      </p>
-    </form>
-    <!-- Image of location/map -->
-    <img src="/w3images/map.jpg" class="w3-image w3-greyscale" style="width:100%;margin-top:48px">
-  </div>
-</div>
-
-<!-- Footer -->
-<footer class="w3-center w3-black w3-padding-64">
-  <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
-  <div class="w3-xlarge w3-section">
-    <i class="fa fa-facebook-official w3-hover-opacity"></i>
-    <i class="fa fa-instagram w3-hover-opacity"></i>
-    <i class="fa fa-snapchat w3-hover-opacity"></i>
-    <i class="fa fa-pinterest-p w3-hover-opacity"></i>
-    <i class="fa fa-twitter w3-hover-opacity"></i>
-    <i class="fa fa-linkedin w3-hover-opacity"></i>
-  </div>
-  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a></p>
-</footer>
- 
 <script>
-// Modal Image Gallery
-function onClick(element) {
-  document.getElementById("img01").src = element.src;
-  document.getElementById("modal01").style.display = "block";
-  var captionText = document.getElementById("caption");
-  captionText.innerHTML = element.alt;
-}
-
-
-// Toggle between showing and hiding the sidebar when clicking the menu icon
-var mySidebar = document.getElementById("mySidebar");
-
-function w3_open() {
-  if (mySidebar.style.display === 'block') {
-    mySidebar.style.display = 'none';
-  } else {
-    mySidebar.style.display = 'block';
-  }
-}
-
-// Close the sidebar with the close button
-function w3_close() {
-    mySidebar.style.display = "none";
+function toggleFaq(el) {
+  const item = el.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.dc-faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
 }
 </script>
-
-</body>
-</html>
